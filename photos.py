@@ -155,19 +155,31 @@ def gallery(array, ncols=4):
               .swapaxes(1,2)
               .reshape(height*nrows, width*ncols, intensity))
     return result
+
+def check_shape(array):
+    series = []
+    og_size = array[0].size
+    for image in array:
+        if image.size != og_size:
+            im = image.resize(og_size)
+            series.append(np.asarray(im))
+        else:
+           series.append(np.asarray(image)) 
+    return series
+
 print('Create gallery...')
 def make_array(dim_x):
     
     for i in range(dim_x):
         print('series',i) 
         series = []
+        aux = []
         for j in range(TIME_STEP-1):
             print('photo',j)
-            aux = np.asarray(Image.open(dirpath+'/images/pre_images/series_{0}_Xquakemap_{1}.jpg'.format(i,j)).convert('RGB'))
-            aux = list(aux)
-            print(np.shape(aux))
-            series.append(aux)
-            print(np.shape(series))
+            aux.append(Image.open(dirpath+'/images/pre_images/series_{0}_Xquakemap_{1}.jpg'.format(i,j)).convert('RGB'))
+            
+            
+        series = check_shape(aux)    
         
         #print(np.shape(series[1]))
        
